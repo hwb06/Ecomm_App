@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "627748918207",
+    "project_id": "easyshoppinig",
+    "storage_bucket": "easyshoppinig.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:627748918207:android:0307bb37f4d67b23b1c70a",
+        "android_client_info": {
+          "package_name": "com.example.ec"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCzf7_sA8KHozjw2z-o7D9ODIuVvUXVv3Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
