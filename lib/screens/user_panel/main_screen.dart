@@ -1,6 +1,7 @@
 import 'package:e_comm_app/controllers/google_signin_controller.dart';
 import 'package:e_comm_app/screens/auth_ui/welcome_screen.dart';
 import 'package:e_comm_app/utils/app_constant.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -22,6 +23,8 @@ class MainScreen extends StatelessWidget {
           GestureDetector(
             onTap: () async{
               GoogleSignIn googleSigniIn = GoogleSignIn();
+              FirebaseAuth _auth = FirebaseAuth.instance;
+              await _auth.signOut();
               await googleSigniIn.signOut();
               Get.offAll(() => WelcomeScreen());
             },

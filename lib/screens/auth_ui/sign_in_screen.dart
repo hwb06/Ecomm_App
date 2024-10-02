@@ -1,6 +1,9 @@
+import 'package:e_comm_app/controllers/signin_controller.dart';
 import 'package:e_comm_app/main.dart';
 import 'package:e_comm_app/screens/auth_ui/signup_screen.dart';
+import 'package:e_comm_app/screens/user_panel/main_screen.dart';
 import 'package:e_comm_app/utils/app_constant.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
@@ -14,6 +17,10 @@ class SignInScreen extends StatefulWidget {
 }
 
 class _SignInScreenState extends State<SignInScreen> {
+  final SignInController signInController = Get.put(SignInController());
+  TextEditingController userEmail = TextEditingController();
+  TextEditingController userPassword = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return KeyboardVisibilityBuilder(builder: (context, isKeyboardVisible) {
@@ -53,6 +60,7 @@ class _SignInScreenState extends State<SignInScreen> {
                 child: Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: TextFormField(
+                    controller: userEmail,
                     cursorColor: AppConstant.AppSecondaryColor,
                     keyboardType: TextInputType.emailAddress,
                     decoration: InputDecoration(
@@ -72,20 +80,30 @@ class _SignInScreenState extends State<SignInScreen> {
                 width: Get.width,
                 child: Padding(
                   padding: const EdgeInsets.all(10.0),
-                  child: TextFormField(
-                    obscureText: true,
-                    cursorColor: AppConstant.AppSecondaryColor,
-                    keyboardType: TextInputType.visiblePassword,
-                    decoration: InputDecoration(
-                        hintText: "Password",
-                        hintStyle: TextStyle(color: Colors.grey),
-                        prefixIcon: Icon(Icons.password),
-                        prefixIconColor: Colors.grey,
-                        suffixIcon: Icon(Icons.visibility_off),
-                        contentPadding: EdgeInsets.only(top: 2.0, left: 2.0),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                        )),
+                  child: Obx(
+                    () => TextFormField(
+                      controller: userPassword,
+                      obscureText: signInController.isPasswordVisible.value,
+                      cursorColor: AppConstant.AppSecondaryColor,
+                      keyboardType: TextInputType.visiblePassword,
+                      decoration: InputDecoration(
+                          hintText: "Password",
+                          hintStyle: TextStyle(color: Colors.grey),
+                          prefixIcon: Icon(Icons.password),
+                          prefixIconColor: Colors.grey,
+                          suffixIcon: GestureDetector(
+                            onTap: () {
+                              signInController.isPasswordVisible.toggle();
+                            },
+                            child: signInController.isPasswordVisible.value
+                                ? Icon(Icons.visibility_off)
+                                : Icon(Icons.visibility),
+                          ),
+                          contentPadding: EdgeInsets.only(top: 2.0, left: 2.0),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          )),
+                    ),
                   ),
                 ),
               ),
@@ -113,7 +131,47 @@ class _SignInScreenState extends State<SignInScreen> {
                     borderRadius: BorderRadius.circular(20.0),
                   ),
                   child: TextButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      String email = userEmail.text.trim();
+                      String password = userPassword.text.trim();
+
+                      if (email.isEmpty || password.isEmpty) {
+                        Get.snackbar("Error", "Please Enter All Details");
+                      } else {
+                        UserCredential? userCredential = await signInController
+                            .signInMethod(email, password);
+
+                        if (userCredential != null) {
+                          if (userCredential.user!.emailVerified) {
+                            Get.snackbar(
+                              "Success",
+                              "Login Successfully!",
+                              snackPosition: SnackPosition.BOTTOM,
+                              backgroundColor: AppConstant.AppSecondaryColor,
+                              colorText: AppConstant.AppTextColor,
+                            );
+                          } else {
+                            Get.snackbar(
+                              "Error",
+                              "Please Verify Your Email Before Login",
+                              snackPosition: SnackPosition.BOTTOM,
+                              backgroundColor: AppConstant.AppSecondaryColor,
+                              colorText: AppConstant.AppTextColor,
+                            );
+                          }
+                          Get.offAll(() => MainScreen());
+                        }
+                        else{
+                          Get.snackbar(
+                            "Error",
+                            "Please Try Again",
+                            snackPosition: SnackPosition.BOTTOM,
+                            backgroundColor: AppConstant.AppSecondaryColor,
+                            colorText: AppConstant.AppTextColor,
+                          );
+                        }
+                      }
+                    },
                     child: Text(
                       "Sign In",
                       style: TextStyle(
@@ -125,7 +183,6 @@ class _SignInScreenState extends State<SignInScreen> {
                   ),
                 ),
               ),
-          
               SizedBox(
                 height: Get.height / 20,
               ),

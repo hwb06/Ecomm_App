@@ -41,6 +41,7 @@ class GoogleSignInController extends GetxController {
             country: '',
             userAddress: '',
             street: '',
+            city: '',
             isAdmin: false,
             isActive: true,
             createdOn: DateTime.now(),
