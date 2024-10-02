@@ -1,5 +1,7 @@
 import 'package:e_comm_app/controllers/signin_controller.dart';
 import 'package:e_comm_app/main.dart';
+import 'package:e_comm_app/screens/admin_panel/admin_main_screen.dart';
+import 'package:e_comm_app/screens/auth_ui/forget_password_screen.dart';
 import 'package:e_comm_app/screens/auth_ui/signup_screen.dart';
 import 'package:e_comm_app/screens/user_panel/main_screen.dart';
 import 'package:e_comm_app/utils/app_constant.dart';
@@ -11,6 +13,8 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:lottie/lottie.dart';
 
+import '../../controllers/get_user_data_controller.dart';
+
 class SignInScreen extends StatefulWidget {
   @override
   State<SignInScreen> createState() => _SignInScreenState();
@@ -18,6 +22,8 @@ class SignInScreen extends StatefulWidget {
 
 class _SignInScreenState extends State<SignInScreen> {
   final SignInController signInController = Get.put(SignInController());
+  final GetUserDataController getUserDataController =
+      Get.put(GetUserDataController());
   TextEditingController userEmail = TextEditingController();
   TextEditingController userPassword = TextEditingController();
 
@@ -110,12 +116,17 @@ class _SignInScreenState extends State<SignInScreen> {
               Container(
                 margin: EdgeInsets.symmetric(horizontal: 13.0),
                 alignment: Alignment.centerRight,
-                child: Text(
-                  "Forget Password?",
-                  style: TextStyle(
-                    color: AppConstant.AppSecondaryColor,
-                    fontSize: 17,
-                    fontWeight: FontWeight.bold,
+                child: GestureDetector(
+                  onTap: () {
+                    Get.to(() => ForgetPasswordScreen());
+                  },
+                  child: Text(
+                    "Forget Password?",
+                    style: TextStyle(
+                      color: AppConstant.AppSecondaryColor,
+                      fontSize: 17,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
               ),
@@ -124,47 +135,71 @@ class _SignInScreenState extends State<SignInScreen> {
               ),
               Material(
                 child: Container(
-                  width: Get.width / 2.2,
+                  width: Get.width / 2,
                   height: Get.height / 18,
                   decoration: BoxDecoration(
                     color: AppConstant.AppSecondaryColor,
                     borderRadius: BorderRadius.circular(20.0),
                   ),
                   child: TextButton(
+                    child: Text(
+                      "SIGN IN",
+                      style: TextStyle(color: AppConstant.AppTextColor),
+                    ),
                     onPressed: () async {
                       String email = userEmail.text.trim();
                       String password = userPassword.text.trim();
 
                       if (email.isEmpty || password.isEmpty) {
-                        Get.snackbar("Error", "Please Enter All Details");
+                        Get.snackbar(
+                          "Error",
+                          "Please enter all details",
+                          snackPosition: SnackPosition.BOTTOM,
+                          backgroundColor: AppConstant.AppSecondaryColor,
+                          colorText: AppConstant.AppTextColor,
+                        );
                       } else {
                         UserCredential? userCredential = await signInController
                             .signInMethod(email, password);
 
+                        var userData = await getUserDataController
+                            .getUserData(userCredential!.user!.uid);
+
                         if (userCredential != null) {
                           if (userCredential.user!.emailVerified) {
-                            Get.snackbar(
-                              "Success",
-                              "Login Successfully!",
-                              snackPosition: SnackPosition.BOTTOM,
-                              backgroundColor: AppConstant.AppSecondaryColor,
-                              colorText: AppConstant.AppTextColor,
-                            );
+                            //
+                            if (userData[0]['isAdmin'] == true) {
+                              Get.snackbar(
+                                "Success Admin Login",
+                                "login Successfully!",
+                                snackPosition: SnackPosition.BOTTOM,
+                                backgroundColor: AppConstant.AppSecondaryColor,
+                                colorText: AppConstant.AppTextColor,
+                              );
+                              Get.offAll(() => AdminMainScreen());
+                            } else {
+                              Get.offAll(() => MainScreen());
+                              Get.snackbar(
+                                "Success User Login",
+                                "login Successfully!",
+                                snackPosition: SnackPosition.BOTTOM,
+                                backgroundColor: AppConstant.AppSecondaryColor,
+                                colorText: AppConstant.AppTextColor,
+                              );
+                            }
                           } else {
                             Get.snackbar(
                               "Error",
-                              "Please Verify Your Email Before Login",
+                              "Please verify your email before login",
                               snackPosition: SnackPosition.BOTTOM,
                               backgroundColor: AppConstant.AppSecondaryColor,
                               colorText: AppConstant.AppTextColor,
                             );
                           }
-                          Get.offAll(() => MainScreen());
-                        }
-                        else{
+                        } else {
                           Get.snackbar(
                             "Error",
-                            "Please Try Again",
+                            "Please try again",
                             snackPosition: SnackPosition.BOTTOM,
                             backgroundColor: AppConstant.AppSecondaryColor,
                             colorText: AppConstant.AppTextColor,
@@ -172,14 +207,6 @@ class _SignInScreenState extends State<SignInScreen> {
                         }
                       }
                     },
-                    child: Text(
-                      "Sign In",
-                      style: TextStyle(
-                        color: AppConstant.AppTextColor,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                      ),
-                    ),
                   ),
                 ),
               ),

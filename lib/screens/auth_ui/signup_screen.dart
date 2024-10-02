@@ -203,7 +203,7 @@ class _SignInScreenState extends State<SignupScreen> {
                           "Error",
                           "Please Enter All Details",
                           snackPosition: SnackPosition.BOTTOM,
-                          backgroundColor: AppConstant.AppSecondaryColor,
+                          backgroundColor: Colors.red,
                           colorText: AppConstant.AppTextColor,
                         );
                       } else {
@@ -257,7 +257,7 @@ class _SignInScreenState extends State<SignupScreen> {
                   GestureDetector(
                     onTap: () => Get.offAll(() => SignInScreen()),
                     child: Text(
-                      "Sign Up",
+                      "Sign In",
                       style: TextStyle(
                         color: AppConstant.AppSecondaryColor,
                         fontSize: 17,
