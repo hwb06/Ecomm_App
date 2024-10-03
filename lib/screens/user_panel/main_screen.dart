@@ -13,6 +13,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import '../../widgets/category_widget.dart';
+import 'all_categories_screen.dart';
 
 class MainScreen extends StatelessWidget {
   @override
@@ -49,7 +50,7 @@ class MainScreen extends StatelessWidget {
               HeadingWidget(
                 headingTitle: "Categories",
                 headingSubTitle: "According to your budget",
-                onTap: (){},
+                onTap: () => Get.to(() => AllCategoriesScreen()),
                 buttonText: "See More >",
               ),
 
