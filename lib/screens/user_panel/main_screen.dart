@@ -14,6 +14,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 import '../../widgets/category_widget.dart';
 import 'all_categories_screen.dart';
+import 'all_flash_sale_products.dart';
 
 class MainScreen extends StatelessWidget {
   @override
@@ -60,7 +61,7 @@ class MainScreen extends StatelessWidget {
               HeadingWidget(
                 headingTitle: "Flash Sales",
                 headingSubTitle: "According to your budget",
-                onTap: (){},
+                onTap: () => Get.to(() => AllFlashSaleProductScreen()),
                 buttonText: "See More >",
               ),
 
