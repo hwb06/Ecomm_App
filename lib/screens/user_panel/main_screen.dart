@@ -12,9 +12,11 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
+import '../../widgets/all_product_widget.dart';
 import '../../widgets/category_widget.dart';
 import 'all_categories_screen.dart';
 import 'all_flash_sale_products.dart';
+import 'all_products_screen.dart';
 
 class MainScreen extends StatelessWidget {
   @override
@@ -66,6 +68,15 @@ class MainScreen extends StatelessWidget {
               ),
 
               FlashSaleWidget(),
+
+              HeadingWidget(
+                headingTitle: "All Products",
+                headingSubTitle: "According to your budget",
+                onTap: () => Get.to(() => AllProductsScreen()),
+                buttonText: "See More >",
+              ),
+
+              AllProductsWidget(),
 
             ],
           ),
