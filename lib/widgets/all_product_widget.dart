@@ -9,6 +9,8 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:image_card/image_card.dart';
 
+import '../screens/user_panel/product_details_screen.dart';
+
 class AllProductsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -72,11 +74,8 @@ class AllProductsWidget extends StatelessWidget {
                 return Row(
                   children: [
                     GestureDetector(
-                      // onTap: () => Get.to(
-                      //   () => AllSingleCategoryProductScreen(
-                      //     categoryId: categoriesModel.categoryId,
-                      //   ),
-                      // ),
+                      onTap: () => Get.to(() =>
+                          ProductDetailsScreen(productModel: productModel)),
                       child: Padding(
                         padding: EdgeInsets.all(8.0),
                         child: Container(

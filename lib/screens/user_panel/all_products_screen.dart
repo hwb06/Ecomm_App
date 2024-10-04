@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_comm_app/models/category.dart';
 import 'package:e_comm_app/models/product_model.dart';
+import 'package:e_comm_app/screens/user_panel/product_details_screen.dart';
 import 'package:e_comm_app/utils/app_constant.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -57,7 +58,7 @@ class AllProductsScreen extends StatelessWidget {
                     crossAxisSpacing: 3,
                     childAspectRatio: 1.19),
                 itemBuilder: (context, index) {
-                  final productData  = snapshot.data!.docs[index];
+                  final productData = snapshot.data!.docs[index];
                   ProductModel productModel = ProductModel(
                       productId: productData['productId'],
                       categoryId: productData['categoryId'],
@@ -82,11 +83,8 @@ class AllProductsScreen extends StatelessWidget {
                   return Row(
                     children: [
                       GestureDetector(
-                        // onTap: () => Get.to(
-                        //   () => AllSingleCategoryProductScreen(
-                        //     categoryId: categoriesModel.categoryId,
-                        //   ),
-                        // ),
+                        onTap: () => Get.to(() =>
+                            ProductDetailsScreen(productModel: productModel)),
                         child: Padding(
                           padding: EdgeInsets.all(8.0),
                           child: Container(
@@ -109,9 +107,9 @@ class AllProductsScreen extends StatelessWidget {
                               ),
                               footer: Center(
                                   child: Text(
-                                    'PKR: ' + productModel.fullPrice,
-                                    style: TextStyle(fontSize: 11),
-                                  )),
+                                'PKR: ' + productModel.fullPrice,
+                                style: TextStyle(fontSize: 11),
+                              )),
                             ),
                           ),
                         ),
