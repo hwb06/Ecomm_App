@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:e_comm_app/screens/user_panel/single_category_products_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -68,31 +69,38 @@ class _AllCategoriesScreenState extends State<AllCategoriesScreen> {
                   );
                   return Row(
                     children: [
-                      Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: Container(
-                          child: FillImageCard(
-                            borderRadius: 20.0,
-                            width: Get.width / 2.3,
-                            heightImage: Get.height / 10,
-                            imageProvider: CachedNetworkImageProvider(
-                              categoriesModel.categoryImg,
-                            ),
-                            title: Center(
-                              child: Text(
-                                categoriesModel.categoryName,
-                                style: TextStyle(
-                                  fontSize: 12.0,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
+                      GestureDetector(
+                        onTap: () => Get.to(
+                          () => AllSingleCategoryProductScreen(
+                            categoryId: categoriesModel.categoryId,
+                          ),
+                        ),
+                        child: Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Container(
+                            child: FillImageCard(
+                              borderRadius: 20.0,
+                              width: Get.width / 2.3,
+                              heightImage: Get.height / 10,
+                              imageProvider: CachedNetworkImageProvider(
+                                categoriesModel.categoryImg,
+                              ),
+                              title: Center(
+                                child: Text(
+                                  categoriesModel.categoryName,
+                                  style: TextStyle(
+                                    fontSize: 12.0,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ),
+                              footer: Center(
+                                  child: Text(
+                                'Latest',
+                                style: TextStyle(fontSize: 12),
+                              )),
                             ),
-                            footer: Center(
-                                child: Text(
-                              'Latest',
-                              style: TextStyle(fontSize: 12),
-                            )),
                           ),
                         ),
                       ),

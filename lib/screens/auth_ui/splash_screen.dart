@@ -24,7 +24,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     // Timer to automatically navigate to MainScreen after 3 seconds
-    Timer(Duration(seconds: 4), () {
+    Timer(Duration(seconds: 3), () {
       loggedin(context);
     });
   }
