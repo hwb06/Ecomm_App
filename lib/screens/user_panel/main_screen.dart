@@ -1,5 +1,6 @@
 import 'package:e_comm_app/controllers/google_signin_controller.dart';
 import 'package:e_comm_app/screens/auth_ui/welcome_screen.dart';
+import 'package:e_comm_app/screens/user_panel/cart_screen.dart';
 import 'package:e_comm_app/utils/app_constant.dart';
 import 'package:e_comm_app/widgets/banner_widget.dart';
 import 'package:e_comm_app/widgets/custom_drawer_widget.dart';
@@ -29,6 +30,15 @@ class MainScreen extends StatelessWidget {
           ),
         ),
         centerTitle: true,
+        actions: [
+          GestureDetector(
+            onTap: () => Get.to(() => CartScreen()),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Icon(Icons.shopping_cart),
+            ),
+          ),
+        ],
         iconTheme: IconThemeData(
           color: Colors.white,
         ),
