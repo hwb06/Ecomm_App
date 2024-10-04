@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_comm_app/models/product_model.dart';
+import 'package:e_comm_app/screens/user_panel/product_details_screen.dart';
 import 'package:e_comm_app/screens/user_panel/single_category_products_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -88,11 +89,8 @@ class _AllFlashSaleProductScreenState extends State<AllFlashSaleProductScreen> {
                   return Row(
                     children: [
                       GestureDetector(
-                        // onTap: () => Get.to(
-                        //   () => AllSingleCategoryProductScreen(
-                        //     categoryId: categoriesModel.categoryId,
-                        //   ),
-                        // ),
+                        onTap: () => Get.to(() =>
+                      ProductDetailsScreen(productModel: productModel)),
                         child: Padding(
                           padding: EdgeInsets.all(8.0),
                           child: Container(

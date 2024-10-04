@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_comm_app/models/category.dart';
 import 'package:e_comm_app/models/product_model.dart';
+import 'package:e_comm_app/screens/user_panel/product_details_screen.dart';
 import 'package:e_comm_app/utils/app_constant.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -68,47 +69,51 @@ class FlashSaleWidget extends StatelessWidget {
                   // );
                   return Row(
                     children: [
-                      Padding(
-                        padding: EdgeInsets.all(5.0),
-                        child: Container(
-                          child: FillImageCard(
-                              borderRadius: 20.0,
-                              width: Get.width / 3.5,
-                              heightImage: Get.height / 12,
-                              imageProvider: CachedNetworkImageProvider(
-                                productModel.productImages[0],
-                              ),
-                              title: Center(
-                                child: Text(
-                                  productModel.productName,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                    fontSize: 12.0,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                      GestureDetector(
+                        onTap: () => Get.to(() =>
+                            ProductDetailsScreen(productModel: productModel)),
+                        child: Padding(
+                          padding: EdgeInsets.all(5.0),
+                          child: Container(
+                            child: FillImageCard(
+                                borderRadius: 20.0,
+                                width: Get.width / 3.5,
+                                heightImage: Get.height / 12,
+                                imageProvider: CachedNetworkImageProvider(
+                                  productModel.productImages[0],
                                 ),
-                              ),
-                              footer: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    "Rs ${productModel.salePrice}",
-                                    style: TextStyle(fontSize: 11.0),
-                                  ),
-                                  SizedBox(
-                                    width: 3.0,
-                                  ),
-                                  Text(
-                                    "${productModel.fullPrice}",
+                                title: Center(
+                                  child: Text(
+                                    productModel.productName,
+                                    overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
-                                      fontSize: 11.0,
-                                      color: Colors.red,
-                                      decoration: TextDecoration.lineThrough,
+                                      fontSize: 12.0,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
                                     ),
                                   ),
-                                ],
-                              )),
+                                ),
+                                footer: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      "Rs ${productModel.salePrice}",
+                                      style: TextStyle(fontSize: 11.0),
+                                    ),
+                                    SizedBox(
+                                      width: 3.0,
+                                    ),
+                                    Text(
+                                      "${productModel.fullPrice}",
+                                      style: TextStyle(
+                                        fontSize: 11.0,
+                                        color: Colors.red,
+                                        decoration: TextDecoration.lineThrough,
+                                      ),
+                                    ),
+                                  ],
+                                )),
+                          ),
                         ),
                       ),
                     ],
