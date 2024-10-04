@@ -46,24 +46,22 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
             CarouselSlider(
               items: widget.productModel.productImages
                   .map(
-                    (imgUrls) =>
-                    ClipRRect(
+                    (imgUrls) => ClipRRect(
                       borderRadius: BorderRadius.circular(10.0),
                       child: CachedNetworkImage(
                         imageUrl: imgUrls,
                         fit: BoxFit.cover,
                         width: Get.width - 10,
-                        placeholder: (context, url) =>
-                            ColoredBox(
-                              color: Colors.white,
-                              child: Center(
-                                child: CupertinoActivityIndicator(),
-                              ),
-                            ),
+                        placeholder: (context, url) => ColoredBox(
+                          color: Colors.white,
+                          child: Center(
+                            child: CupertinoActivityIndicator(),
+                          ),
+                        ),
                         errorWidget: (context, url, error) => Icon(Icons.error),
                       ),
                     ),
-              )
+                  )
                   .toList(),
               options: CarouselOptions(
                 scrollDirection: Axis.horizontal,
@@ -102,13 +100,13 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                         child: Row(
                           children: [
                             widget.productModel.isSale == true &&
-                                widget.productModel.salePrice != ''
+                                    widget.productModel.salePrice != ''
                                 ? Text(
-                              "PKR: " + widget.productModel.salePrice,
-                            )
+                                    "PKR: " + widget.productModel.salePrice,
+                                  )
                                 : Text(
-                              "PKR: " + widget.productModel.fullPrice,
-                            ),
+                                    "PKR: " + widget.productModel.fullPrice,
+                                  ),
                           ],
                         ),
                       ),
@@ -210,8 +208,10 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     if (snapshot.exists) {
       int currentQuantity = snapshot['productQuantity'];
       int updatedQuantity = currentQuantity + quantityIncrement;
-      double totalPrice =
-          double.parse(widget.productModel.fullPrice) * updatedQuantity;
+      double totalPrice = double.parse(widget.productModel.isSale
+              ? widget.productModel.salePrice
+              : widget.productModel.fullPrice) *
+          updatedQuantity;
 
       await documentReference.update({
         'productQuantity': updatedQuantity,
@@ -226,23 +226,25 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
       print("product exists");
 
       CartModel cartModel = CartModel(
-          productId: widget.productModel.productId,
-          categoryId: widget.productModel.categoryId,
-          productName: widget.productModel.productName,
-          categoryName: widget.productModel.categoryName,
-          salePrice: widget.productModel.salePrice,
-          fullPrice: widget.productModel.fullPrice,
-          productImages: widget.productModel.productImages,
-          deliveryTime: widget.productModel.deliveryTime,
-          isSale: widget.productModel.isSale,
-          productDescription: widget.productModel.productDescription,
-          createdAt: DateTime.now(),
-          updatedAt: DateTime.now(),
-          productQuantity: 1,
-          productTotalPrice: double.parse(widget.productModel.fullPrice),
+        productId: widget.productModel.productId,
+        categoryId: widget.productModel.categoryId,
+        productName: widget.productModel.productName,
+        categoryName: widget.productModel.categoryName,
+        salePrice: widget.productModel.salePrice,
+        fullPrice: widget.productModel.fullPrice,
+        productImages: widget.productModel.productImages,
+        deliveryTime: widget.productModel.deliveryTime,
+        isSale: widget.productModel.isSale,
+        productDescription: widget.productModel.productDescription,
+        createdAt: DateTime.now(),
+        updatedAt: DateTime.now(),
+        productQuantity: 1,
+        productTotalPrice: double.parse(widget.productModel.isSale
+            ? widget.productModel.salePrice
+            : widget.productModel.fullPrice),
       );
       await documentReference.set(cartModel.toMap());
-      
+
       print("product added");
     }
   }
