@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_comm_app/controllers/cart_price_controller.dart';
 import 'package:e_comm_app/models/cart_model.dart';
 import 'package:e_comm_app/models/order_model.dart';
+import 'package:e_comm_app/screens/user_panel/add_reviews_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -101,31 +102,38 @@ class _CartScreenState extends State<AllOrdersScreen> {
                       elevation: 5,
                       color: AppConstant.AppTextColor,
                       child: ListTile(
-                        leading: CircleAvatar(
-                          backgroundColor: AppConstant.AppSecondaryColor,
-                          backgroundImage:
-                              NetworkImage(orderModel.productImages[0]),
-                        ),
-                        title: Text(orderModel.productName),
-                        subtitle: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Text(orderModel.productTotalPrice.toString()),
-                            SizedBox(
-                              width: 10.0,
-                            ),
-                            orderModel.status != true
-                                ? Text(
-                                    "Pending..",
-                                    style: TextStyle(color: Colors.red),
-                                  )
-                                : Text(
-                                    "Completed!",
-                                    style: TextStyle(color: Colors.green),
-                                  ),
-                          ],
-                        ),
-                      ),
+                          leading: CircleAvatar(
+                            backgroundColor: AppConstant.AppSecondaryColor,
+                            backgroundImage:
+                                NetworkImage(orderModel.productImages[0]),
+                          ),
+                          title: Text(orderModel.productName),
+                          subtitle: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Text(orderModel.productTotalPrice.toString()),
+                              SizedBox(
+                                width: 10.0,
+                              ),
+                              orderModel.status != true
+                                  ? Text(
+                                      "Pending..",
+                                      style: TextStyle(color: Colors.red),
+                                    )
+                                  : Text(
+                                      "Completed!",
+                                      style: TextStyle(color: Colors.green),
+                                    ),
+                            ],
+                          ),
+                          trailing: orderModel.status == true
+                              ? ElevatedButton(
+                                  onPressed: () {
+                                    Get.to(() => AddReviewScreen(orderModel: orderModel));
+                                  },
+                                  child: Text("Review"),
+                                )
+                              : SizedBox.shrink()),
                     );
                   }),
             );
