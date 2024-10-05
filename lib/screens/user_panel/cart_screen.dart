@@ -83,7 +83,8 @@ class _CartScreenState extends State<CartScreen> {
                     createdAt: productData['createdAt'],
                     updatedAt: productData['updatedAt'],
                     productQuantity: productData['productQuantity'],
-                    productTotalPrice: productData['productTotalPrice'],
+                    productTotalPrice: double.parse(
+                        productData['productTotalPrice'].toString()),
                   );
 
                   //calculate price

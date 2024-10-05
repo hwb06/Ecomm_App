@@ -7,6 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../models/product_model.dart';
 import '../../utils/app_constant.dart';
@@ -41,7 +42,10 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
             onTap: () => Get.to(() => CartScreen()),
             child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Icon(Icons.shopping_cart, color: AppConstant.AppTextColor,),
+              child: Icon(
+                Icons.shopping_cart,
+                color: AppConstant.AppTextColor,
+              ),
             ),
           ),
         ],
@@ -159,7 +163,11 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                     fontSize: 16,
                                   ),
                                 ),
-                                onPressed: () {},
+                                onPressed: () {
+                                  sendMessageOnWhatsApp(
+                                    productModel: widget.productModel,
+                                  );
+                                },
                               ),
                             ),
                           ),
@@ -200,6 +208,23 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
         ),
       ),
     );
+  }
+
+  //send message on whatsapp
+  static Future<void> sendMessageOnWhatsApp(
+      {required ProductModel productModel}) async {
+    final number = "+03376300120";
+    final message =
+        "Hello Hussnain \n I Want To Know About This Product \n ${productModel.productName} \n ${productModel.productId}";
+
+    final url = 'https://wa.me/$number? text = ${Uri.encodeComponent(message)}';
+
+    if(await canLaunchUrl(url as Uri)){
+      await launch(url);
+    } else{
+      throw 'Could Not Launch $url';
+    }
+
   }
 
   //check product exist or not
