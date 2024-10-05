@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:e_comm_app/controllers/cart_price_controller.dart';
 import 'package:e_comm_app/models/cart_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -18,6 +19,9 @@ class CartScreen extends StatefulWidget {
 
 class _CartScreenState extends State<CartScreen> {
   User? user = FirebaseAuth.instance.currentUser;
+
+  final ProductPriceController productPriceController =
+      Get.put(ProductPriceController());
 
   @override
   Widget build(BuildContext context) {
@@ -81,6 +85,9 @@ class _CartScreenState extends State<CartScreen> {
                     productTotalPrice: productData['productTotalPrice'],
                   );
 
+                  //calculate price
+                  productPriceController.fetchProductPrice();
+
                   return SwipeActionCell(
                     key: ObjectKey(cartModel.productId),
                     trailingActions: [
@@ -107,7 +114,7 @@ class _CartScreenState extends State<CartScreen> {
                         leading: CircleAvatar(
                           backgroundColor: AppConstant.AppSecondaryColor,
                           backgroundImage:
-                          NetworkImage(cartModel.productImages[0]),
+                              NetworkImage(cartModel.productImages[0]),
                         ),
                         title: Text(cartModel.productName),
                         subtitle: Row(
@@ -127,10 +134,10 @@ class _CartScreenState extends State<CartScreen> {
                                       .doc(cartModel.productId)
                                       .update({
                                     'productQuantity':
-                                    cartModel.productQuantity - 1,
+                                        cartModel.productQuantity - 1,
                                     'productTotalPrice':
-                                    (double.parse(cartModel.fullPrice) *
-                                        (cartModel.productQuantity - 1))
+                                        (double.parse(cartModel.fullPrice) *
+                                            (cartModel.productQuantity - 1))
                                   });
                                 }
                               },
@@ -153,11 +160,11 @@ class _CartScreenState extends State<CartScreen> {
                                       .doc(cartModel.productId)
                                       .update({
                                     'productQuantity':
-                                    cartModel.productQuantity + 1,
+                                        cartModel.productQuantity + 1,
                                     'productTotalPrice':
-                                    double.parse(cartModel.fullPrice) +
-                                        double.parse(cartModel.fullPrice) *
-                                            (cartModel.productQuantity)
+                                        double.parse(cartModel.fullPrice) +
+                                            double.parse(cartModel.fullPrice) *
+                                                (cartModel.productQuantity)
                                   });
                                 }
                               },
@@ -188,10 +195,12 @@ class _CartScreenState extends State<CartScreen> {
             Padding(
               padding: const EdgeInsets.all(8.0),
             ),
-            Text(
-              "Total: PKR 12,000",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
+            Obx(
+              () => Text(
+                "Total: ${productPriceController.totalPrice.value.toStringAsFixed(1)} PKR ",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
             Padding(
