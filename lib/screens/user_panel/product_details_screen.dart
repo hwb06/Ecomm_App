@@ -1,12 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:e_comm_app/controllers/rating_controller.dart';
 import 'package:e_comm_app/models/cart_model.dart';
 import 'package:e_comm_app/models/review_model.dart';
 import 'package:e_comm_app/screens/user_panel/single_category_products_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:image_card/image_card.dart';
@@ -32,6 +34,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    CalculateProductRatingController calculateProductRatingController = Get.put(
+        CalculateProductRatingController(widget.productModel.productId));
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -54,231 +58,277 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
           ),
         ],
       ),
-      body: Container(
-        child: Column(
-          children: [
-            //product images
-            SizedBox(
-              height: Get.height / 60,
-            ),
-            CarouselSlider(
-              items: widget.productModel.productImages
-                  .map(
-                    (imgUrls) => ClipRRect(
-                      borderRadius: BorderRadius.circular(10.0),
-                      child: CachedNetworkImage(
-                        imageUrl: imgUrls,
-                        fit: BoxFit.cover,
-                        width: Get.width - 10,
-                        placeholder: (context, url) => ColoredBox(
-                          color: Colors.white,
-                          child: Center(
-                            child: CupertinoActivityIndicator(),
+      body: SingleChildScrollView(
+        child: Container(
+          child: Column(
+            children: [
+              //product images
+              SizedBox(
+                height: Get.height / 60,
+              ),
+              CarouselSlider(
+                items: widget.productModel.productImages
+                    .map(
+                      (imgUrls) => ClipRRect(
+                        borderRadius: BorderRadius.circular(10.0),
+                        child: CachedNetworkImage(
+                          imageUrl: imgUrls,
+                          fit: BoxFit.cover,
+                          width: Get.width - 10,
+                          placeholder: (context, url) => ColoredBox(
+                            color: Colors.white,
+                            child: Center(
+                              child: CupertinoActivityIndicator(),
+                            ),
+                          ),
+                          errorWidget: (context, url, error) => Icon(Icons.error),
+                        ),
+                      ),
+                    )
+                    .toList(),
+                options: CarouselOptions(
+                  scrollDirection: Axis.horizontal,
+                  autoPlay: true,
+                  aspectRatio: 2.5,
+                  viewportFraction: 1,
+                ),
+              ),
+        
+              Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Card(
+                  elevation: 5.0,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          alignment: Alignment.topLeft,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(widget.productModel.productName),
+                              Icon(Icons.favorite_outline),
+                            ],
                           ),
                         ),
-                        errorWidget: (context, url, error) => Icon(Icons.error),
                       ),
-                    ),
-                  )
-                  .toList(),
-              options: CarouselOptions(
-                scrollDirection: Axis.horizontal,
-                autoPlay: true,
-                aspectRatio: 2.5,
-                viewportFraction: 1,
-              ),
-            ),
-
-            Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Card(
-                elevation: 5.0,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        alignment: Alignment.topLeft,
+        
+                      //Reviews Rating
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(widget.productModel.productName),
-                            Icon(Icons.favorite_outline),
+                            Container(
+                              alignment: Alignment.topLeft,
+                              child:  RatingBar.builder(
+                                initialRating: double.parse(calculateProductRatingController.averageRating.toString()),
+                                minRating: 1,
+                                direction: Axis.horizontal,
+                                allowHalfRating: true,
+                                itemCount: 5,
+                                itemSize: 25,
+                                itemPadding: EdgeInsets.symmetric(horizontal: 1.0, vertical: 2.0),
+                                itemBuilder: (context, _) => Icon(
+                                  Icons.star,
+                                  color: Colors.amber,
+                                ),
+                                onRatingUpdate: (value) {
+                                },
+                              ),
+                            ),
+                            Text(calculateProductRatingController.averageRating.toString()),
                           ],
                         ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        alignment: Alignment.topLeft,
+
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          alignment: Alignment.topLeft,
+                          child: Row(
+                            children: [
+                              widget.productModel.isSale == true &&
+                                      widget.productModel.salePrice != ''
+                                  ? Text(
+                                      "PKR: " + widget.productModel.salePrice,
+                                    )
+                                  : Text(
+                                      "PKR: " + widget.productModel.fullPrice,
+                                    ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          alignment: Alignment.topLeft,
+                          child: Text(
+                              "Category: " + widget.productModel.categoryName),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          alignment: Alignment.topLeft,
+                          child: Text("Description: " +
+                              widget.productModel.productDescription),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.all(8.0),
                         child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            widget.productModel.isSale == true &&
-                                    widget.productModel.salePrice != ''
-                                ? Text(
-                                    "PKR: " + widget.productModel.salePrice,
-                                  )
-                                : Text(
-                                    "PKR: " + widget.productModel.fullPrice,
+                            Material(
+                              child: Container(
+                                width: Get.width / 3.0,
+                                height: Get.height / 16,
+                                decoration: BoxDecoration(
+                                  color: AppConstant.AppSecondaryColor,
+                                  borderRadius: BorderRadius.circular(20.0),
+                                ),
+                                child: TextButton(
+                                  child: Text(
+                                    "Whatsapp",
+                                    style: TextStyle(
+                                      color: AppConstant.AppTextColor,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16,
+                                    ),
                                   ),
+                                  onPressed: () {
+                                    sendMessageOnWhatsApp(
+                                      productModel: widget.productModel,
+                                    );
+                                  },
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              width: 5.0,
+                            ),
+                            Material(
+                              child: Container(
+                                width: Get.width / 3.0,
+                                height: Get.height / 16,
+                                decoration: BoxDecoration(
+                                  color: AppConstant.AppSecondaryColor,
+                                  borderRadius: BorderRadius.circular(20.0),
+                                ),
+                                child: TextButton(
+                                  child: Text(
+                                    "Add to cart",
+                                    style: TextStyle(
+                                      color: AppConstant.AppTextColor,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                  onPressed: () async {
+                                    await checkProductExistence(uId: user!.uid);
+                                  },
+                                ),
+                              ),
+                            ),
                           ],
                         ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        alignment: Alignment.topLeft,
-                        child: Text(
-                            "Category: " + widget.productModel.categoryName),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        alignment: Alignment.topLeft,
-                        child: Text("Description: " +
-                            widget.productModel.productDescription),
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Material(
-                            child: Container(
-                              width: Get.width / 3.0,
-                              height: Get.height / 16,
-                              decoration: BoxDecoration(
-                                color: AppConstant.AppSecondaryColor,
-                                borderRadius: BorderRadius.circular(20.0),
-                              ),
-                              child: TextButton(
-                                child: Text(
-                                  "Whatsapp",
-                                  style: TextStyle(
-                                    color: AppConstant.AppTextColor,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16,
-                                  ),
-                                ),
-                                onPressed: () {
-                                  sendMessageOnWhatsApp(
-                                    productModel: widget.productModel,
-                                  );
-                                },
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            width: 5.0,
-                          ),
-                          Material(
-                            child: Container(
-                              width: Get.width / 3.0,
-                              height: Get.height / 16,
-                              decoration: BoxDecoration(
-                                color: AppConstant.AppSecondaryColor,
-                                borderRadius: BorderRadius.circular(20.0),
-                              ),
-                              child: TextButton(
-                                child: Text(
-                                  "Add to cart",
-                                  style: TextStyle(
-                                    color: AppConstant.AppTextColor,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16,
-                                  ),
-                                ),
-                                onPressed: () async {
-                                  await checkProductExistence(uId: user!.uid);
-                                },
-                              ),
-                            ),
-                          ),
-                        ],
+                    ],
+                  ),
+                ),
+              ),
+        
+              //Review and feedback Section
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Customer Reviews",
+                      style: TextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.bold,
+                        color: AppConstant.AppSecondaryColor,
                       ),
                     ),
                   ],
                 ),
               ),
-            ),
-            //Review and feedback Section
-            FutureBuilder(
-              future: FirebaseFirestore.instance
-                  .collection('products')
-                  .doc(widget.productModel.productId)
-                  .collection('review')
-                  .get(),
-              builder: (BuildContext context,
-                  AsyncSnapshot<QuerySnapshot> snapshot) {
-                if (snapshot.hasError) {
-                  return Center(
-                    child: Text("Error"),
-                  );
-                }
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Container(
-                    height: Get.height / 5,
-                    child: Center(
-                      child: CupertinoActivityIndicator(),
-                    ),
-                  );
-                }
-
-                if (snapshot.data!.docs.isEmpty) {
-                  return Center(
-                    child: Text("No reviews found!"),
-                  );
-                }
-
-                if (snapshot.data != null) {
-                  return ListView.builder(
-                    physics: BouncingScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: snapshot.data!.docs.length,
-                    itemBuilder: (context, index) {
-                      var data = snapshot.data!.docs[index];
-                      ReviewModel reviewModel = ReviewModel(
-                        customerName: data['customerName'],
-                        customerPhone: data['customerPhone'],
-                        customerDeviceToken: data['customerDeviceToken'],
-                        customerId: data['customerId'],
-                        feedback: data['feedback'],
-                        rating: data['rating'],
-                        createdAt: data['createdAt'],
-                      );
-                      return Card(
-                        elevation: 5,
-                        child: ListTile(
-                          leading: CircleAvatar(
-                            child: Text(reviewModel.customerName[0]),
+              FutureBuilder(
+                future: FirebaseFirestore.instance
+                    .collection('products')
+                    .doc(widget.productModel.productId)
+                    .collection('review')
+                    .get(),
+                builder: (BuildContext context,
+                    AsyncSnapshot<QuerySnapshot> snapshot) {
+                  if (snapshot.hasError) {
+                    return Center(
+                      child: Text("Error"),
+                    );
+                  }
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Container(
+                      height: Get.height / 5,
+                      child: Center(
+                        child: CupertinoActivityIndicator(),
+                      ),
+                    );
+                  }
+        
+                  if (snapshot.data!.docs.isEmpty) {
+                    return Center(
+                      child: Text("No reviews found!"),
+                    );
+                  }
+        
+                  if (snapshot.data != null) {
+                    return ListView.builder(
+                      physics: BouncingScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: snapshot.data!.docs.length,
+                      itemBuilder: (context, index) {
+                        var data = snapshot.data!.docs[index];
+                        ReviewModel reviewModel = ReviewModel(
+                          customerName: data['customerName'],
+                          customerPhone: data['customerPhone'],
+                          customerDeviceToken: data['customerDeviceToken'],
+                          customerId: data['customerId'],
+                          feedback: data['feedback'],
+                          rating: data['rating'],
+                          createdAt: data['createdAt'],
+                        );
+                        return Card(
+                          elevation: 5,
+                          child: ListTile(
+                            leading: CircleAvatar(
+                              child: Text(reviewModel.customerName[0]),
+                            ),
+                            title: Text(reviewModel.customerName),
+                            subtitle: Text(reviewModel.feedback),
+                            trailing: Text(reviewModel.rating),
                           ),
-                          title: Text(reviewModel.customerName),
-                          subtitle: Text(reviewModel.feedback),
-                          trailing: Text(reviewModel.rating),
-                        ),
-                      );
-                    },
-                  );
-                }
-
-                return Container();
-              },
-            ),
-          ],
+                        );
+                      },
+                    );
+                  }
+        
+                  return Container();
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
-
-
-
 
   //send message on whatsapp
   static Future<void> sendMessageOnWhatsApp(
