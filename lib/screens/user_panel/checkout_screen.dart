@@ -207,6 +207,7 @@ class _CartScreenState extends State<CheckoutScreen> {
                 child: Container(
                   height: 55.0,
                   child: TextFormField(
+                    controller: nameController,
                     textInputAction: TextInputAction.next,
                     decoration: InputDecoration(
                         labelText: "Name",
@@ -225,6 +226,7 @@ class _CartScreenState extends State<CheckoutScreen> {
                 child: Container(
                   height: 55.0,
                   child: TextFormField(
+                    controller: phoneController,
                     textInputAction: TextInputAction.next,
                     keyboardType: TextInputType.phone,
                     decoration: InputDecoration(
@@ -244,6 +246,7 @@ class _CartScreenState extends State<CheckoutScreen> {
                 child: Container(
                   height: 55.0,
                   child: TextFormField(
+                    controller: addressController,
                     textInputAction: TextInputAction.next,
                     decoration: InputDecoration(
                         labelText: "Address",
@@ -266,6 +269,7 @@ class _CartScreenState extends State<CheckoutScreen> {
                   if (nameController.text != '' &&
                       phoneController.text != '' &&
                       addressController != '') {
+
                     String name = nameController.text.trim();
                     String phone = phoneController.text.trim();
                     String address = addressController.text.trim();
@@ -279,13 +283,12 @@ class _CartScreenState extends State<CheckoutScreen> {
                       customerPhone: phone,
                       customerAddress: address,
                       customerDeviceToken: customerToken,
-
                     );
-
-                  } else {
-                    print("Please fill all details");
+                  } else{
+                    print("Fill All Details.");
                   }
                 },
+
                 child: Text(
                   "Place Order",
                   style: TextStyle(color: AppConstant.AppTextColor),
