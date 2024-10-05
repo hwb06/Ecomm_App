@@ -2,13 +2,17 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_comm_app/models/cart_model.dart';
+import 'package:e_comm_app/models/review_model.dart';
+import 'package:e_comm_app/screens/user_panel/single_category_products_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:image_card/image_card.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../models/category.dart';
 import '../../models/product_model.dart';
 import '../../utils/app_constant.dart';
 import '../auth_ui/sign_in_screen.dart';
@@ -204,11 +208,77 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 ),
               ),
             ),
+            //Review and feedback Section
+            FutureBuilder(
+              future: FirebaseFirestore.instance
+                  .collection('products')
+                  .doc(widget.productModel.productId)
+                  .collection('review')
+                  .get(),
+              builder: (BuildContext context,
+                  AsyncSnapshot<QuerySnapshot> snapshot) {
+                if (snapshot.hasError) {
+                  return Center(
+                    child: Text("Error"),
+                  );
+                }
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Container(
+                    height: Get.height / 5,
+                    child: Center(
+                      child: CupertinoActivityIndicator(),
+                    ),
+                  );
+                }
+
+                if (snapshot.data!.docs.isEmpty) {
+                  return Center(
+                    child: Text("No reviews found!"),
+                  );
+                }
+
+                if (snapshot.data != null) {
+                  return ListView.builder(
+                    physics: BouncingScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: snapshot.data!.docs.length,
+                    itemBuilder: (context, index) {
+                      var data = snapshot.data!.docs[index];
+                      ReviewModel reviewModel = ReviewModel(
+                        customerName: data['customerName'],
+                        customerPhone: data['customerPhone'],
+                        customerDeviceToken: data['customerDeviceToken'],
+                        customerId: data['customerId'],
+                        feedback: data['feedback'],
+                        rating: data['rating'],
+                        createdAt: data['createdAt'],
+                      );
+                      return Card(
+                        elevation: 5,
+                        child: ListTile(
+                          leading: CircleAvatar(
+                            child: Text(reviewModel.customerName[0]),
+                          ),
+                          title: Text(reviewModel.customerName),
+                          subtitle: Text(reviewModel.feedback),
+                          trailing: Text(reviewModel.rating),
+                        ),
+                      );
+                    },
+                  );
+                }
+
+                return Container();
+              },
+            ),
           ],
         ),
       ),
     );
   }
+
+
+
 
   //send message on whatsapp
   static Future<void> sendMessageOnWhatsApp(
@@ -219,12 +289,11 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
 
     final url = 'https://wa.me/$number? text = ${Uri.encodeComponent(message)}';
 
-    if(await canLaunchUrl(url as Uri)){
+    if (await canLaunchUrl(url as Uri)) {
       await launch(url);
-    } else{
+    } else {
       throw 'Could Not Launch $url';
     }
-
   }
 
   //check product exist or not
