@@ -4,6 +4,7 @@ import 'package:e_comm_app/models/cart_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_swipe_action_cell/core/cell.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:image_card/image_card.dart';
@@ -30,12 +31,12 @@ class _CartScreenState extends State<CartScreen> {
               color: AppConstant.AppTextColor, fontWeight: FontWeight.bold),
         ),
       ),
-      body: FutureBuilder(
-        future: FirebaseFirestore.instance
+      body: StreamBuilder(
+        stream: FirebaseFirestore.instance
             .collection("cart")
             .doc(user!.uid)
             .collection('cartOrders')
-            .get(),
+            .snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {
             return Center(
@@ -80,32 +81,57 @@ class _CartScreenState extends State<CartScreen> {
                     productTotalPrice: productData['productTotalPrice'],
                   );
 
-                  return Card(
-                    elevation: 5,
-                    color: AppConstant.AppTextColor,
-                    child: ListTile(
-                      leading: CircleAvatar(
-                        backgroundColor: AppConstant.AppSecondaryColor,
-                        backgroundImage: NetworkImage(cartModel.productImages[0]),
+                  return SwipeActionCell(
+                    key: ObjectKey(cartModel.productId),
+                    trailingActions: [
+                      SwipeAction(
+                        title: "Delete",
+                        forceAlignmentToBoundary: true,
+                        performsFirstActionWithFullSwipe: true,
+                        onTap: (CompletionHandler handler) async {
+                          print("delteted");
+
+                         await FirebaseFirestore.instance
+                              .collection('cart')
+                              .doc(user!.uid)
+                              .collection('cartOrders')
+                              .doc(cartModel.productId)
+                              .delete();
+                        },
                       ),
-                      title: Text(cartModel.productName),
-                      subtitle: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Text(cartModel.productTotalPrice.toString()),
-                          SizedBox(width: Get.width/10.0,),
-                          CircleAvatar(
-                            radius: 16.0,
-                            backgroundColor: AppConstant.AppSecondaryColor,
-                            child: Text("-"),
-                          ),
-                          SizedBox(width: Get.width/70.0,),
-                          CircleAvatar(
-                            radius: 16.0,
-                            backgroundColor: AppConstant.AppSecondaryColor,
-                            child: Text("+"),
-                          ),
-                        ],
+                    ],
+                    child: Card(
+                      elevation: 5,
+                      color: AppConstant.AppTextColor,
+                      child: ListTile(
+                        leading: CircleAvatar(
+                          backgroundColor: AppConstant.AppSecondaryColor,
+                          backgroundImage:
+                              NetworkImage(cartModel.productImages[0]),
+                        ),
+                        title: Text(cartModel.productName),
+                        subtitle: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Text(cartModel.productTotalPrice.toString()),
+                            SizedBox(
+                              width: Get.width / 10.0,
+                            ),
+                            CircleAvatar(
+                              radius: 16.0,
+                              backgroundColor: AppConstant.AppSecondaryColor,
+                              child: Text("-"),
+                            ),
+                            SizedBox(
+                              width: Get.width / 70.0,
+                            ),
+                            CircleAvatar(
+                              radius: 16.0,
+                              backgroundColor: AppConstant.AppSecondaryColor,
+                              child: Text("+"),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   );
@@ -113,10 +139,10 @@ class _CartScreenState extends State<CartScreen> {
               ),
             );
           }
+
           return Container();
         },
       ),
-
       bottomNavigationBar: Container(
         margin: EdgeInsets.only(bottom: 5.0),
         child: Row(
@@ -125,10 +151,12 @@ class _CartScreenState extends State<CartScreen> {
             Padding(
               padding: const EdgeInsets.all(8.0),
             ),
-            Text("Total: PKR 12,000", style: TextStyle(
-              fontWeight: FontWeight.bold,
-            ),),
-
+            Text(
+              "Total: PKR 12,000",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Material(
