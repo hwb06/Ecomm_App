@@ -91,7 +91,7 @@ class _CartScreenState extends State<CartScreen> {
                         onTap: (CompletionHandler handler) async {
                           print("delteted");
 
-                         await FirebaseFirestore.instance
+                          await FirebaseFirestore.instance
                               .collection('cart')
                               .doc(user!.uid)
                               .collection('cartOrders')
@@ -107,7 +107,7 @@ class _CartScreenState extends State<CartScreen> {
                         leading: CircleAvatar(
                           backgroundColor: AppConstant.AppSecondaryColor,
                           backgroundImage:
-                              NetworkImage(cartModel.productImages[0]),
+                          NetworkImage(cartModel.productImages[0]),
                         ),
                         title: Text(cartModel.productName),
                         subtitle: Row(
@@ -117,18 +117,55 @@ class _CartScreenState extends State<CartScreen> {
                             SizedBox(
                               width: Get.width / 10.0,
                             ),
-                            CircleAvatar(
-                              radius: 16.0,
-                              backgroundColor: AppConstant.AppSecondaryColor,
-                              child: Text("-"),
+                            GestureDetector(
+                              onTap: () async {
+                                if (cartModel.productQuantity > 1) {
+                                  await FirebaseFirestore.instance
+                                      .collection('cart')
+                                      .doc(user!.uid)
+                                      .collection('cartOrders')
+                                      .doc(cartModel.productId)
+                                      .update({
+                                    'productQuantity':
+                                    cartModel.productQuantity - 1,
+                                    'productTotalPrice':
+                                    (double.parse(cartModel.fullPrice) *
+                                        (cartModel.productQuantity - 1))
+                                  });
+                                }
+                              },
+                              child: CircleAvatar(
+                                radius: 16.0,
+                                backgroundColor: AppConstant.AppSecondaryColor,
+                                child: Text("-"),
+                              ),
                             ),
                             SizedBox(
                               width: Get.width / 70.0,
                             ),
-                            CircleAvatar(
-                              radius: 16.0,
-                              backgroundColor: AppConstant.AppSecondaryColor,
-                              child: Text("+"),
+                            GestureDetector(
+                              onTap: () async {
+                                if (cartModel.productQuantity > 0) {
+                                  await FirebaseFirestore.instance
+                                      .collection('cart')
+                                      .doc(user!.uid)
+                                      .collection('cartOrders')
+                                      .doc(cartModel.productId)
+                                      .update({
+                                    'productQuantity':
+                                    cartModel.productQuantity + 1,
+                                    'productTotalPrice':
+                                    double.parse(cartModel.fullPrice) +
+                                        double.parse(cartModel.fullPrice) *
+                                            (cartModel.productQuantity)
+                                  });
+                                }
+                              },
+                              child: CircleAvatar(
+                                radius: 16.0,
+                                backgroundColor: AppConstant.AppSecondaryColor,
+                                child: Text("+"),
+                              ),
                             ),
                           ],
                         ),
