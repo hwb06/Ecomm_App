@@ -1,6 +1,7 @@
 import 'package:e_comm_app/controllers/signup_controller.dart';
 import 'package:e_comm_app/main.dart';
 import 'package:e_comm_app/screens/auth_ui/sign_in_screen.dart';
+import 'package:e_comm_app/services/notification_service.dart';
 import 'package:e_comm_app/utils/app_constant.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -187,12 +188,13 @@ class _SignInScreenState extends State<SignupScreen> {
                   ),
                   child: TextButton(
                     onPressed: () async {
+                      NotificationService notificationService = NotificationService();
                       String name = username.text.trim();
                       String email = userEmail.text.trim();
                       String phone = userPhone.text.trim();
                       String city = userCity.text.trim();
                       String password = userPassword.text.trim();
-                      String userDeviceToken = '';
+                      String? userDeviceToken = await notificationService.getDeviceToken();
 
                       if (name.isEmpty ||
                           email.isEmpty ||
@@ -214,7 +216,7 @@ class _SignInScreenState extends State<SignupScreen> {
                             phone,
                             city,
                             password,
-                            userDeviceToken,
+                            userDeviceToken!,
                         );
                         if(userCredential !=null){
                           Get.snackbar(

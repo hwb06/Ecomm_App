@@ -11,7 +11,6 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:image_card/image_card.dart';
 
 import '../../controllers/get_customer_device_token_controller.dart';
-import '../../services/get_service_key.dart';
 import '../../services/place_order_service.dart';
 import '../../utils/app_constant.dart';
 
@@ -169,10 +168,10 @@ class _CartScreenState extends State<CheckoutScreen> {
                   ),
                   child: TextButton(
                     onPressed: () async {
-                      // showCustomBottomSheet();
-                      GetServerKey getServerKey = GetServerKey();
-                      String accessToken = await getServerKey.getServerKeyToken();
-                      print(accessToken);
+                      showCustomBottomSheet();
+                      // GetServerKey getServerKey = GetServerKey();
+                      // String accessToken = await getServerKey.getServerKeyToken();
+                      // print(accessToken);
                     },
                     child: Text(
                       "Confirm Order",

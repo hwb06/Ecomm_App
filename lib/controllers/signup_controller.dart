@@ -38,7 +38,7 @@ class SignUpController extends GetxController {
         email: userEmail,
         phone: userPhone,
         userImg: '',
-        userDeviceToken: getDeviceTokenController.deviceToken.toString(),
+        userDeviceToken: userDeviceToken ,
         country: '',
         userAddress: '',
         street: '',
