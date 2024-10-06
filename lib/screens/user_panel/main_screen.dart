@@ -1,6 +1,7 @@
 import 'package:e_comm_app/controllers/google_signin_controller.dart';
 import 'package:e_comm_app/screens/auth_ui/welcome_screen.dart';
 import 'package:e_comm_app/screens/user_panel/cart_screen.dart';
+import 'package:e_comm_app/services/fcm_service.dart';
 import 'package:e_comm_app/services/notification_service.dart';
 import 'package:e_comm_app/utils/app_constant.dart';
 import 'package:e_comm_app/widgets/banner_widget.dart';
@@ -32,8 +33,8 @@ class _MainScreenState extends State<MainScreen> {
   void initState() {
     super.initState();
     notificationService.requestNotificationPermission();
-
     notificationService.getDeviceToken();
+    FCMService.firebaseInit();
   }
 
   @override
