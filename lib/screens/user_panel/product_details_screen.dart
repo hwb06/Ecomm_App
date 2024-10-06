@@ -70,21 +70,21 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 items: widget.productModel.productImages
                     .map(
                       (imgUrls) => ClipRRect(
-                        borderRadius: BorderRadius.circular(10.0),
-                        child: CachedNetworkImage(
-                          imageUrl: imgUrls,
-                          fit: BoxFit.cover,
-                          width: Get.width - 10,
-                          placeholder: (context, url) => ColoredBox(
-                            color: Colors.white,
-                            child: Center(
-                              child: CupertinoActivityIndicator(),
-                            ),
-                          ),
-                          errorWidget: (context, url, error) => Icon(Icons.error),
+                    borderRadius: BorderRadius.circular(10.0),
+                    child: CachedNetworkImage(
+                      imageUrl: imgUrls,
+                      fit: BoxFit.cover,
+                      width: Get.width - 10,
+                      placeholder: (context, url) => ColoredBox(
+                        color: Colors.white,
+                        child: Center(
+                          child: CupertinoActivityIndicator(),
                         ),
                       ),
-                    )
+                      errorWidget: (context, url, error) => Icon(Icons.error),
+                    ),
+                  ),
+                )
                     .toList(),
                 options: CarouselOptions(
                   scrollDirection: Axis.horizontal,
@@ -93,7 +93,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   viewportFraction: 1,
                 ),
               ),
-        
+
               Padding(
                 padding: EdgeInsets.all(8.0),
                 child: Card(
@@ -116,7 +116,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                           ),
                         ),
                       ),
-        
+
                       //Reviews Rating
                       Padding(
                         padding: const EdgeInsets.all(8.0),
@@ -153,13 +153,13 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                           child: Row(
                             children: [
                               widget.productModel.isSale == true &&
-                                      widget.productModel.salePrice != ''
+                                  widget.productModel.salePrice != ''
                                   ? Text(
-                                      "PKR: " + widget.productModel.salePrice,
-                                    )
+                                "PKR: " + widget.productModel.salePrice,
+                              )
                                   : Text(
-                                      "PKR: " + widget.productModel.fullPrice,
-                                    ),
+                                "PKR: " + widget.productModel.fullPrice,
+                              ),
                             ],
                           ),
                         ),
@@ -243,7 +243,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   ),
                 ),
               ),
-        
+
               //Review and feedback Section
               Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -282,13 +282,13 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       ),
                     );
                   }
-        
+
                   if (snapshot.data!.docs.isEmpty) {
                     return Center(
                       child: Text("No reviews found!"),
                     );
                   }
-        
+
                   if (snapshot.data != null) {
                     return ListView.builder(
                       physics: BouncingScrollPhysics(),
@@ -319,7 +319,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       },
                     );
                   }
-        
+
                   return Container();
                 },
               ),
@@ -363,8 +363,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
       int currentQuantity = snapshot['productQuantity'];
       int updatedQuantity = currentQuantity + quantityIncrement;
       double totalPrice = double.parse(widget.productModel.isSale
-              ? widget.productModel.salePrice
-              : widget.productModel.fullPrice) *
+          ? widget.productModel.salePrice
+          : widget.productModel.fullPrice) *
           updatedQuantity;
 
       await documentReference.update({

@@ -128,10 +128,13 @@ class _CartScreenState extends State<AllOrdersScreen> {
                           ),
                           trailing: orderModel.status == true
                               ? ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: AppConstant.AppSecondaryColor,
+                            ),
                                   onPressed: () {
                                     Get.to(() => AddReviewScreen(orderModel: orderModel));
                                   },
-                                  child: Text("Review"),
+                                  child: Text("Review", style: TextStyle(color: AppConstant.AppTextColor),),
                                 )
                               : SizedBox.shrink()),
                     );

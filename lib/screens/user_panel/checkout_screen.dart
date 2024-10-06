@@ -11,6 +11,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:image_card/image_card.dart';
 
 import '../../controllers/get_customer_device_token_controller.dart';
+import '../../services/get_service_key.dart';
 import '../../services/place_order_service.dart';
 import '../../utils/app_constant.dart';
 
@@ -23,7 +24,7 @@ class _CartScreenState extends State<CheckoutScreen> {
   User? user = FirebaseAuth.instance.currentUser;
 
   final ProductPriceController productPriceController =
-      Get.put(ProductPriceController());
+  Get.put(ProductPriceController());
 
   TextEditingController nameController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
@@ -120,7 +121,7 @@ class _CartScreenState extends State<CheckoutScreen> {
                         leading: CircleAvatar(
                           backgroundColor: AppConstant.AppSecondaryColor,
                           backgroundImage:
-                              NetworkImage(cartModel.productImages[0]),
+                          NetworkImage(cartModel.productImages[0]),
                         ),
                         title: Text(cartModel.productName),
                         subtitle: Row(
@@ -149,7 +150,7 @@ class _CartScreenState extends State<CheckoutScreen> {
               padding: const EdgeInsets.all(8.0),
             ),
             Obx(
-              () => Text(
+                  () => Text(
                 "Total: ${productPriceController.totalPrice.value.toStringAsFixed(1)} PKR ",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
@@ -167,8 +168,11 @@ class _CartScreenState extends State<CheckoutScreen> {
                     borderRadius: BorderRadius.circular(20.0),
                   ),
                   child: TextButton(
-                    onPressed: () {
-                      showCustomBottomSheet();
+                    onPressed: () async {
+                      // showCustomBottomSheet();
+                      GetServerKey getServerKey = GetServerKey();
+                      String accessToken = await getServerKey.getServerKeyToken();
+                      print(accessToken);
                     },
                     child: Text(
                       "Confirm Order",

@@ -1,6 +1,7 @@
 import 'package:e_comm_app/controllers/google_signin_controller.dart';
 import 'package:e_comm_app/screens/auth_ui/welcome_screen.dart';
 import 'package:e_comm_app/screens/user_panel/cart_screen.dart';
+import 'package:e_comm_app/services/notification_service.dart';
 import 'package:e_comm_app/utils/app_constant.dart';
 import 'package:e_comm_app/widgets/banner_widget.dart';
 import 'package:e_comm_app/widgets/custom_drawer_widget.dart';
@@ -19,7 +20,20 @@ import 'all_categories_screen.dart';
 import 'all_flash_sale_products.dart';
 import 'all_products_screen.dart';
 
-class MainScreen extends StatelessWidget {
+class MainScreen extends StatefulWidget {
+  @override
+  State<MainScreen> createState() => _MainScreenState();
+}
+
+class _MainScreenState extends State<MainScreen> {
+
+  NotificationService notificationService = NotificationService();
+  @override
+  void initState() {
+    super.initState();
+    notificationService.requestNotificationPermission();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -1,7 +1,5 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:get/get_rx/src/rx_types/rx_types.dart';
-import 'package:get/get_state_manager/src/simple/get_controllers.dart';
+import 'package:get/get.dart';
 
 class CalculateProductRatingController extends GetxController {
   final String productId;
@@ -34,11 +32,7 @@ class CalculateProductRatingController extends GetxController {
             numberOfReviews++;
           }
         });
-        if (numberOfReviews != 0) {
-          averageRating.value = totalRating / numberOfReviews;
-        } else {
-          averageRating.value = 0.0;
-        }
+        averageRating.value = numberOfReviews != 0 ? totalRating / numberOfReviews : 0.0;
       } else {
         averageRating.value = 0.0;
       }
