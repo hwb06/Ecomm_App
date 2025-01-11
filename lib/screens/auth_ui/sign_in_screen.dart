@@ -21,7 +21,7 @@ class SignInScreen extends StatefulWidget {
 }
 
 class _SignInScreenState extends State<SignInScreen> {
-  final SignInController signInController = Get.put(SignInController());
+    final SignInController signInController = Get.put(SignInController());
   final GetUserDataController getUserDataController =
       Get.put(GetUserDataController());
   TextEditingController userEmail = TextEditingController();
