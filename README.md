@@ -4,7 +4,7 @@
 
 ♥ Iɴᴛʀᴏᴅᴜᴄɪɴɢ: A modern mobile e-commerce application built for clothing and fashion retail. The app provides a seamless shopping experience with features like user authentication, product categorization, cart management, and secure checkout.
 
-![App Cover](https://github.com/hwb06/Ecomm_App/blob/main/App_UI_Screens/App%20Cover.jpg?raw=true)  
+![App Cover](https://github.com/hwb06/Ecomm_App/blob/main/App_UI_Screens/App%20Cover.png)  
 
 ## ♥ **Kᴇʏ Fᴇᴀᴛᴜʀᴇꜱ**:
  ## *🔐 Aᴜᴛʜᴇɴᴛɪᴄᴀᴛɪᴏɴ & Sᴇᴄᴜʀɪᴛʏ*:
@@ -62,23 +62,10 @@
 ## **App UIs Screenshots**
 Here are some screenshots of the app:
 
-![Welcome Screen](https://github.com/hwb06/Ecomm_App/blob/main/App_UI_Screens/Welcome%20Screen.JPG?raw=true)  
-![Sign_In Screen](https://github.com/hwb06/Ecomm_App/blob/main/App_UI_Screens/Sign_in%20Screen.JPG?raw=true)  
-![Forget Screen](https://github.com/hwb06/Ecomm_App/blob/main/App_UI_Screens/Forget%20Screen.JPG?raw=true) 
-![Sign_Up Screen](https://github.com/hwb06/Ecomm_App/blob/main/App_UI_Screens/Sign_Up%20Screen.JPG?raw=true)  
-![Ecomm. Dashboard](https://github.com/hwb06/Ecomm_App/blob/main/App_UI_Screens/Main%20Dashboard.JPG?raw=true)  
-![Drawer Layout](https://github.com/hwb06/Ecomm_App/blob/main/App_UI_Screens/Drawer%20layout.JPG?raw=true)  
-![All Categories](https://github.com/hwb06/Ecomm_App/blob/main/App_UI_Screens/All%20Categories.JPG?raw=true)  
-![All Products](https://github.com/hwb06/Ecomm_App/blob/main/App_UI_Screens/All%20Products.JPG?raw=true)  
-![All Sale Products](https://github.com/hwb06/Ecomm_App/blob/main/App_UI_Screens/All%20Sale%20Products.JPG?raw=true) 
-![Product Details #01](https://github.com/hwb06/Ecomm_App/blob/main/App_UI_Screens/Product%20Details%201.JPG?raw=true)  
-![Product Details #02](https://github.com/hwb06/Ecomm_App/blob/main/App_UI_Screens/Product%20Details%202.JPG?raw=true)  
-![Product Details #03](https://github.com/hwb06/Ecomm_App/blob/main/App_UI_Screens/Product%20Details%203.JPG?raw=true)  
-![Product Rating](https://github.com/hwb06/Ecomm_App/blob/main/App_UI_Screens/product%20rating.JPG?raw=true)  
-![Cart Screen](https://github.com/hwb06/Ecomm_App/blob/main/App_UI_Screens/Cart%20Screen.JPG?raw=true) 
-![Checout Screen](https://github.com/hwb06/Ecomm_App/blob/main/App_UI_Screens/Checkout%20Screen.JPG?raw=true) 
-![Place Order](https://github.com/hwb06/Ecomm_App/blob/main/App_UI_Screens/place%20order.JPG?raw=true)  
-![All Orders](https://github.com/hwb06/Ecomm_App/blob/main/App_UI_Screens/All%20Orders.JPG?raw=true)  
+![#01](https://github.com/hwb06/Ecomm_App/blob/main/App_UI_Screens/01.png)  
+![#02](https://github.com/hwb06/Ecomm_App/blob/main/App_UI_Screens/02.png)  
+![#03](https://github.com/hwb06/Ecomm_App/blob/main/App_UI_Screens/03.png)  
+![#04](https://github.com/hwb06/Ecomm_App/blob/main/App_UI_Screens/04.png)  
 
 ## **Acknowledgments**
  - 📱 Fully Responsive Design
@@ -94,7 +81,7 @@ Here are some screenshots of the app:
 ### **App Demo**
 You can download and view the demo video of the app here:
 
-[Flutter_Ecomm_App Link](https://github.com/hwb06/Ecomm_App/releases/tag/v1.0.0)
+[Flutter_Ecomm_App Link](https://www.dropbox.com/scl/fi/nahw3hvhd66pc0zh94ko6/ecomm_app_demo.mp4?rlkey=fxg8ppt5ms9q8vzznjrmrsm3q&st=pi82gag7&dl=0)
  
 ## **Contact Information**
 If you have any questions or feedback, feel free to reach out:
