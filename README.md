@@ -4,7 +4,7 @@
 
 ♥ Iɴᴛʀᴏᴅᴜᴄɪɴɢ: A modern mobile e-commerce application built for clothing and fashion retail. The app provides a seamless shopping experience with features like user authentication, product categorization, cart management, and secure checkout.
 
-![App Cover](https://github.com/hwb06/Ecomm_App/blob/main/App_UI_Screens/App%20Cover.png)  
+![App Cover](https://github.com/hwb06/Ecomm_App/blob/main/assets/Project%20Showcase/App%20Cover.png)  
 
 ## ♥ **Kᴇʏ Fᴇᴀᴛᴜʀᴇꜱ**:
  ## *🔐 Aᴜᴛʜᴇɴᴛɪᴄᴀᴛɪᴏɴ & Sᴇᴄᴜʀɪᴛʏ*:
@@ -62,10 +62,10 @@
 ## **App UIs Screenshots**
 Here are some screenshots of the app:
 
-![#01](https://github.com/hwb06/Ecomm_App/blob/main/App_UI_Screens/01.png)  
-![#02](https://github.com/hwb06/Ecomm_App/blob/main/App_UI_Screens/02.png)  
-![#03](https://github.com/hwb06/Ecomm_App/blob/main/App_UI_Screens/03.png)  
-![#04](https://github.com/hwb06/Ecomm_App/blob/main/App_UI_Screens/04.png)  
+![#01](https://github.com/hwb06/Ecomm_App/blob/main/assets/Project%20Showcase/01.png)  
+![#02](https://github.com/hwb06/Ecomm_App/blob/main/assets/Project%20Showcase/02.png)  
+![#03](https://github.com/hwb06/Ecomm_App/blob/main/assets/Project%20Showcase/03.png)  
+![#04](https://github.com/hwb06/Ecomm_App/blob/main/assets/Project%20Showcase/04.png)  
 
 ## **Acknowledgments**
  - 📱 Fully Responsive Design
